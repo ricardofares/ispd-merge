@@ -1,6 +1,5 @@
 package ispd.gui;
 
-import ispd.arquivo.description.DescreveSistema;
 import ispd.arquivo.exportador.Exportador;
 import ispd.arquivo.interpretador.gridsim.InterpretadorGridSim;
 import ispd.arquivo.interpretador.simgrid.InterpretadorSimGrid;
@@ -77,6 +76,7 @@ import java.util.ResourceBundle;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 public class MainWindow extends JFrame implements KeyListener {
     private static final int DRAWING_AREA_START_SIZE = 1500;
@@ -84,7 +84,7 @@ public class MainWindow extends JFrame implements KeyListener {
     private static final int LOADING_SCREEN_WIDTH = 200;
     private static final int LOADING_SCREEN_HEIGHT = 100;
     private static final String[] ISPD_FILE_EXTENSIONS =
-            { ".ims", ".imsx" };
+            { ".imsx" };
     private static final String[] ALL_FILE_EXTENSIONS =
             { ".ims", ".imsx", ".wmsx" };
     private static final Locale LOCALE_EN_US = new Locale("en", "US");
@@ -280,16 +280,24 @@ public class MainWindow extends JFrame implements KeyListener {
         return dir.isDirectory() && dir.exists();
     }
 
+    /**
+     * It returns {@code true} if the specified file has a
+     * valid iSPD file extension. Otherwise, {@code false}
+     * is returned.
+     *
+     * @param file the file to be checked
+     *
+     * @return {@code true} if the specified file has a valid
+     *         iSPD file extension.
+     *
+     * @throws NullPointerException if {@code file} is null.
+     *
+     * @see #ISPD_FILE_EXTENSIONS the valid iSPD file
+     *                            extensions.
+     */
     private static boolean hasValidIspdFileExtension(final File file) {
-        return file.getName().endsWith(".ims")
-               || file.getName().endsWith(".imsx");
-    }
-
-    private static DescreveSistema getSystemDescription(final File file) throws ClassNotFoundException, IOException {
-        try (final var input =
-                     new ObjectInputStream(new FileInputStream(file))) {
-            return (DescreveSistema) input.readObject();
-        }
+        return Stream.of(ISPD_FILE_EXTENSIONS)
+                .anyMatch(extension -> file.getName().endsWith(extension));
     }
 
     private static void jButtonInjectFaultsActionPerformed(final ActionEvent evt) {
@@ -939,7 +947,7 @@ public class MainWindow extends JFrame implements KeyListener {
         if (this.jFileChooser.showOpenDialog(this) != JFileChooser.APPROVE_OPTION)
             return;
 
-        var file = this.jFileChooser.getSelectedFile();
+        final var file = this.jFileChooser.getSelectedFile();
 
         if (!MainWindow.hasValidIspdFileExtension(file)) {
             this.invalidFileSelected(file);
@@ -947,8 +955,8 @@ public class MainWindow extends JFrame implements KeyListener {
         }
 
         try {
-            file = this.readFileContents(file);
-            this.updateGuiWithOpenFile("model opened", file);
+            final var contentReadFile = this.readFileContents(file);
+            this.updateGuiWithOpenFile("model opened", contentReadFile);
         } catch (final ClassNotFoundException | ParserConfigurationException |
                        IOException | SAXException ex) {
             this.processFileOpeningException(ex);
@@ -985,7 +993,7 @@ public class MainWindow extends JFrame implements KeyListener {
             return file;
         }
 
-        return this.readFileOldExtension(file);
+        return file;
     }
 
     private void updateGuiWithOpenFile(final String message, final File file) {
@@ -1004,18 +1012,6 @@ public class MainWindow extends JFrame implements KeyListener {
         this.modelType = this.drawingArea.getModelType();
         this.virtualMachines = this.drawingArea.getVirtualMachines();
         this.updateVmConfigButtonVisibility();
-    }
-
-    private File readFileOldExtension(final File file) throws IOException,
-            ClassNotFoundException {
-        final var description = MainWindow.getSystemDescription(file);
-
-        this.startNewDrawingOld(description);
-        return null;
-    }
-
-    private void startNewDrawingOld(final DescreveSistema description) {
-        this.drawingArea = MainWindow.emptyDrawingArea();
     }
 
     private void startNewDrawing(final Document doc) {
