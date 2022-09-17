@@ -331,6 +331,9 @@ public class ResultsDialog extends JDialog {
         this.jScrollPaneProcessamento.setViewportView(this.graficoBarraProcessamento);
         this.jScrollPaneComunicacao.setViewportView(this.graficoBarraComunicacao);
         this.jScrollPaneProcessamentoTempo.setViewportView(this.graficoProcessamentoTempo);
+        this.charts = new SimulationResultChartMaker();
+        this.charts.criarProcessamento(metricas.getMetricasProcessamento());
+        this.charts.criarComunicacao(metricas.getMetricasComunicacao());
 
     }
 
@@ -743,50 +746,50 @@ public class ResultsDialog extends JDialog {
         jButtonUsage2.addActionListener(this::jButtonUsage2ActionPerformed);
         jToolBar2.add(jButtonUsage2);
 
-        jPanelProcessamento.setLayout(jPanelProcessamentoLayout);
-        jPanelProcessamentoLayout.setHorizontalGroup(
-                jPanelProcessamentoLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                        .addComponent(this.jScrollPaneCharts)
-                        .addGroup(jPanelProcessamentoLayout.createSequentialGroup()
-                                .addComponent(jToolBarProcessamento,
-                                        GroupLayout.DEFAULT_SIZE,
-                                        205, Short.MAX_VALUE)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jToolBar3,
-                                        GroupLayout.DEFAULT_SIZE,
-                                        190, Short.MAX_VALUE)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jToolBar4,
-                                        GroupLayout.DEFAULT_SIZE,
-                                        254, Short.MAX_VALUE))
-                        .addComponent(jToolBar2,
-                                GroupLayout.Alignment.LEADING,
-                                GroupLayout.DEFAULT_SIZE,
-                                GroupLayout.DEFAULT_SIZE,
-                                Short.MAX_VALUE)
-        );
-        jPanelProcessamentoLayout.setVerticalGroup(
-                jPanelProcessamentoLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanelProcessamentoLayout.createSequentialGroup()
-                                .addGroup(jPanelProcessamentoLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                        .addComponent(jToolBarProcessamento,
-                                                GroupLayout.PREFERRED_SIZE,
-                                                25, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jToolBar3,
-                                                GroupLayout.PREFERRED_SIZE,
-                                                25, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jToolBar4,
-                                                GroupLayout.PREFERRED_SIZE,
-                                                25, GroupLayout.PREFERRED_SIZE))
-                                .addGap(2, 2, 2)
-                                .addComponent(jToolBar2,
-                                        GroupLayout.PREFERRED_SIZE, 25,
-                                        GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(this.jScrollPaneCharts,
-                                        GroupLayout.DEFAULT_SIZE,
-                                        335, Short.MAX_VALUE))
-        );
+//        jPanelProcessamento.setLayout(jPanelProcessamentoLayout);
+//        jPanelProcessamentoLayout.setHorizontalGroup(
+//                jPanelProcessamentoLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+//                        .addComponent(this.jScrollPaneCharts)
+//                        .addGroup(jPanelProcessamentoLayout.createSequentialGroup()
+//                                .addComponent(jToolBarProcessamento,
+//                                        GroupLayout.DEFAULT_SIZE,
+//                                        205, Short.MAX_VALUE)
+//                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+//                                .addComponent(jToolBar3,
+//                                        GroupLayout.DEFAULT_SIZE,
+//                                        190, Short.MAX_VALUE)
+//                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+//                                .addComponent(jToolBar4,
+//                                        GroupLayout.DEFAULT_SIZE,
+//                                        254, Short.MAX_VALUE))
+//                        .addComponent(jToolBar2,
+//                                GroupLayout.Alignment.LEADING,
+//                                GroupLayout.DEFAULT_SIZE,
+//                                GroupLayout.DEFAULT_SIZE,
+//                                Short.MAX_VALUE)
+//        );
+//        jPanelProcessamentoLayout.setVerticalGroup(
+//                jPanelProcessamentoLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//                        .addGroup(jPanelProcessamentoLayout.createSequentialGroup()
+//                                .addGroup(jPanelProcessamentoLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//                                        .addComponent(jToolBarProcessamento,
+//                                                GroupLayout.PREFERRED_SIZE,
+//                                                25, GroupLayout.PREFERRED_SIZE)
+//                                        .addComponent(jToolBar3,
+//                                                GroupLayout.PREFERRED_SIZE,
+//                                                25, GroupLayout.PREFERRED_SIZE)
+//                                        .addComponent(jToolBar4,
+//                                                GroupLayout.PREFERRED_SIZE,
+//                                                25, GroupLayout.PREFERRED_SIZE))
+//                                .addGap(2, 2, 2)
+//                                .addComponent(jToolBar2,
+//                                        GroupLayout.PREFERRED_SIZE, 25,
+//                                        GroupLayout.PREFERRED_SIZE)
+//                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+//                                .addComponent(this.jScrollPaneCharts,
+//                                        GroupLayout.DEFAULT_SIZE,
+//                                        335, Short.MAX_VALUE))
+//        );
 
         jTabbedPanelGraficosIndividuais.addTab("Charts", jPanelProcessamento);
 
@@ -855,42 +858,44 @@ public class ResultsDialog extends JDialog {
                                         331, Short.MAX_VALUE))
         );
 
-        jTabbedPanelGraficosIndividuais.addTab("Individual Graphs",
-                this.jPanel1);
+        jTabbedPanelGraficosIndividuais.addTab("Individual Graphs", this.jPanel1);
 
         final GroupLayout layout =
                 new GroupLayout(this.getContentPane());
         this.getContentPane().setLayout(layout);
+//        layout.setHorizontalGroup(
+//                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//                        .addComponent(this.jTabbedPaneGrid)
+//                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//                                .addGroup(layout.createSequentialGroup()
+//                                        .addGap(0, 0, Short.MAX_VALUE)
+//                                        .addComponent(jTabbedPane2,
+//                                                GroupLayout.PREFERRED_SIZE,
+//                                                100, GroupLayout.PREFERRED_SIZE)
+//                                        .addGap(0, 0, Short.MAX_VALUE)))
+//        );
+//        layout.setVerticalGroup(
+//                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//                        .addComponent(this.jTabbedPaneGrid,
+//                                GroupLayout.DEFAULT_SIZE, 386,
+//                                Short.MAX_VALUE)
+//                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//                                .addGroup(layout.createSequentialGroup()
+//                                        .addGap(0, 0, Short.MAX_VALUE)
+//                                        .addComponent(jTabbedPane2,
+//                                                GroupLayout.PREFERRED_SIZE,
+//                                                100, GroupLayout.PREFERRED_SIZE)
+//                                        .addGap(0, 0, Short.MAX_VALUE)))
+//        );
+        jTabbedPaneGrid.addTab("Graphs", jTabbedPanelGraficosIndividuais);
         layout.setHorizontalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(this.jTabbedPaneGrid)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                        .addGap(0, 0, Short.MAX_VALUE)
-                                        .addComponent(jTabbedPane2,
-                                                GroupLayout.PREFERRED_SIZE,
-                                                100, GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE)))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jTabbedPaneGrid)
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(this.jTabbedPaneGrid,
-                                GroupLayout.DEFAULT_SIZE, 386,
-                                Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                        .addGap(0, 0, Short.MAX_VALUE)
-                                        .addComponent(jTabbedPane2,
-                                                GroupLayout.PREFERRED_SIZE,
-                                                100, GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE)))
-                        .addComponent(jTabbedPanelGraficosIndividuais)
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(jTabbedPanelGraficosIndividuais,
-                                GroupLayout.DEFAULT_SIZE, 420,
-                                Short.MAX_VALUE)
+                        .addComponent(jTabbedPaneGrid)
+
         );
 
         this.pack();
@@ -1256,7 +1261,6 @@ public class ResultsDialog extends JDialog {
     }
 
     private void jButtonProcessBarraActionPerformed(final java.awt.event.ActionEvent evt) {
-
         this.jScrollPaneCharts.setViewportView(this.charts.getProcessingBarChart());
     }
 
@@ -1403,6 +1407,8 @@ public class ResultsDialog extends JDialog {
         super(parent, ModalityType.APPLICATION_MODAL);
         this.tarefas = tarefas;
         this.charts = new SimulationResultChartMaker();
+        this.charts.criarProcessamento(metricas.getMetricasProcessamento());
+        this.charts.criarComunicacao(metricas.getMetricasComunicacao());
         if (config.getCreateProcessingChart()) {
             this.charts.criarProcessamento(metricas.getMetricasProcessamento());
         }

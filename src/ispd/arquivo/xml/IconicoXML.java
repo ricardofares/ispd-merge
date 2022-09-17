@@ -240,7 +240,7 @@ public class IconicoXML {
                         Double.parseDouble(maquina.getAttribute("power")),
                         Double.parseDouble(maquina.getAttribute("load")),
                         master.getAttribute("scheduler")/*Escalonador*/,
-                        Double.parseDouble(maquina.getAttribute("energy")));
+                        1.0);
                 centroDeServicos.put(global, mestre);
                 mestres.add(mestre);
                 usuarios.put(mestre.getProprietario(), usuarios.get(mestre.getProprietario()) + mestre.getPoderComputacional());
@@ -251,7 +251,7 @@ public class IconicoXML {
                         Double.parseDouble(maquina.getAttribute("power")),
                         1/*num processadores*/,
                         Double.parseDouble(maquina.getAttribute("load")),
-                        Double.parseDouble(maquina.getAttribute("energy")));
+                        1.0);
                 maqs.add(maq);
                 centroDeServicos.put(global, maq);
                 usuarios.put(maq.getProprietario(), usuarios.get(maq.getProprietario()) + maq.getPoderComputacional());

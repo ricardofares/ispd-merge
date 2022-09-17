@@ -96,6 +96,7 @@ public class RedeDeFilas {
         this.maquinas = maquinas;
         this.links = links;
         this.internets = internets;
+        this.limiteConsumo = new HashMap<>();
     }
     
     /**

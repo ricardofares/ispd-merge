@@ -272,11 +272,12 @@ public class Metricas implements Serializable {
 
         }
 
-        Double porcentLimite;//Limite de consumo em porcentagem do consumo total da porção do usuário
+        Double porcentLimite = 1.0;//Limite de consumo em porcentagem do consumo total da porção do usuário
 
         for (String user : usuarios) {
 
-            porcentLimite = redeDeFilas.getLimites().get(user) / 100;
+            if (redeDeFilas.getLimites().containsKey(user))
+                porcentLimite = redeDeFilas.getLimites().get(user) / 100;
             limitesConsumoTempoSim.put(user, limitesConsumoTempoSim.get(user).multiply(BigDecimal.valueOf(porcentLimite)));
             limitesConsumoTempoUso.put(user, limitesConsumoTempoSim.get(user));
         }

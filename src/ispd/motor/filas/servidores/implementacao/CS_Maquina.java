@@ -100,6 +100,7 @@ public class CS_Maquina extends CS_Processamento implements Mensagens, Vertice {
         this.mestres = new ArrayList<CS_Processamento>();
         this.processadoresDisponiveis = numeroProcessadores;
         this.tarefaEmExecucao = new ArrayList<Tarefa>(numeroProcessadores);
+        this.historicoProcessamento = new ArrayList<>();
     }
 
     public CS_Maquina(String id, String proprietario, double PoderComputacional, int numeroProcessadores, double Ocupacao, int numeroMaquina) {
